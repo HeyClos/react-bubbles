@@ -20,11 +20,21 @@ const ColorList = ({ colors, updateColors }) => {
     e.preventDefault();
     // Make a put request to save your updated color
     // think about where will you get the id from...
-    // where is is saved right now?
+    // where is is saved right now? I MAY HAVE TO CHANGE ID TO COLORS.
+    // v1 /colorToEdit.id v2 colorToEdit
+    axios
+      .put(`http://localhost.5000/api/colors/:id`, colorToEdit)
+      .then(res => {
+        console.log(res);
+        setColorToEdit(res.data)
+      })
+      .catch(err => console.log(err))
   };
 
   const deleteColor = color => {
     // make a delete request to delete this color
+    axios
+    .delete(`http://localhost:5000/api/movies/${color}`)
   };
 
   return (
