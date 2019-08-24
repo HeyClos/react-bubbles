@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosWithAuth from "../utils/axiosWithAuth"
 
 const initialColor = {
   color: "",
@@ -10,30 +10,44 @@ const ColorList = ({ colors, updateColors }) => {
   console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const [color, setColor] = useState(colors);
 
   const editColor = color => {
     setEditing(true);
     setColorToEdit(color);
   };
 
+  // const saveEdit = e => {
+  //   e.preventDefault();
+  //   // Make a put request to save your updated color
+  //   // think about where will you get the id from...
+  //   // where is is saved right now? I MAY HAVE TO CHANGE ID TO COLORS.
+  //   // v1 THIS WORKS /${colorToEdit.id} v2 ${colorToEdit} v3 ${colors.id}
+  //   // i may have to use colors in my put
+
+  //   axiosWithAuth()
+  //     .put('http://localhost:5000/api/colors/:id', colors)
+  //     .then(res => {
+  //       console.log(res.data);
+  //       setColorToEdit(res.data)
+  //     })
+  //     .catch(err => console.log(err))
+  // };
+
   const saveEdit = e => {
     e.preventDefault();
-    // Make a put request to save your updated color
-    // think about where will you get the id from...
-    // where is is saved right now? I MAY HAVE TO CHANGE ID TO COLORS.
-    // v1 /${colorToEdit.id} v2 ${colorToEdit} v3 ${colors.id}
-    axios
+    axiosWithAuth()
       .put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
       .then(res => {
-        console.log(res);
-        setColorToEdit(res.data)
+        console.log(res.data);
+        updateColors(res.data)
       })
       .catch(err => console.log(err))
   };
 
   const deleteColor = color => {
     // make a delete request to delete this color
-    axios
+    axiosWithAuth()
     .delete(`http://localhost:5000/api/colors/${color.id}`)
   };
 
